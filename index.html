@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chúc Mừng 8/3</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    /* ===== SCREEN 1: LANDING ===== */
+    #landing {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fdfcfb 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 0.8s ease;
+    }
+
+    #landing h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4rem;
+      color: #c2185b;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    #landing p {
+      font-size: 1.2rem;
+      color: #ad1457;
+      margin-bottom: 2.5rem;
+    }
+
+    #enterBtn {
+      padding: 16px 48px;
+      font-size: 1.3rem;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      background: linear-gradient(135deg, #f06292, #e91e63);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #enterBtn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(233, 30, 99, 0.5);
+    }
+
+    #enterBtn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: shimmer 2.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Falling petals on landing */
+    .petal {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, #f48fb1, #f06292);
+      border-radius: 50% 0 50% 50%;
+      opacity: 0.7;
+      animation: fall linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ===== SCREEN 2: TYPING WISHES ===== */
+    #wishes {
+      position: fixed;
+      inset: 0;
+      background: url('images/group.jpg') center/cover no-repeat;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 90;
+    }
+
+    #wishes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 0;
+    }
+
+    #typing-container {
+      position: relative;
+      z-index: 1;
+      max-width: 750px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    #typing-text {
+      font-size: 2.2rem;
+      color: #fff;
+      line-height: 1.8;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+      min-height: 200px;
+      font-weight: 600;
+    }
+
+    #typing-text .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background: #fff;
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 0.7s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* ===== SCREEN 3: SLIDESHOW ===== */
+    #slideshow {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+    }
+
+    #slideshow-img {
+      max-width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      border-radius: 0;
+      opacity: 0;
+      filter: blur(15px);
+      transition: opacity 1s ease, filter 1s ease;
+    }
+
+    #slideshow-img.show {
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    #slideshow-counter {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+    }
+
+    /* ===== SCREEN 4: ENDING ===== */
+    #ending {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 85;
+      flex-direction: column;
+    }
+
+    #fireworks {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    #ending-text {
+      font-size: 2rem;
+      color: #fff;
+      text-align: center;
+      line-height: 1.8;
+      padding: 40px;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    #ending-text.show {
+      opacity: 1;
+    }
+
+    #ending-from {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 1.5s ease 1s;
+      position: relative;
+      z-index: 1;
+    }
+
+    #ending-from.show {
+      opacity: 1;
+    }
+
+    /* Hearts floating in slideshow */
+    .heart {
+      position: fixed;
+      color: #e91e63;
+      font-size: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      animation: floatHeart 4s ease-in infinite;
+      z-index: 81;
+    }
+
+    @keyframes floatHeart {
+      0% { opacity: 0; transform: translateY(0) scale(0.5); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-100vh) scale(1.2); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      #landing h1 {
+        font-size: 2.5rem;
+      }
+      #landing p {
+        font-size: 1rem;
+        padding: 0 20px;
+      }
+      #enterBtn {
+        padding: 12px 36px;
+        font-size: 1.1rem;
+      }
+      #typing-text {
+        font-size: 1.6rem !important;
+        font-weight: 700 !important;
+      }
+      #typing-container {
+        padding: 20px;
+      }
+      #ending-text {
+        font-size: 1.4rem;
+        padding: 20px;
+      }
+      #ending-from {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #landing h1 {
+        font-size: 2rem;
+      }
+      #landing p {
+        font-size: 0.9rem;
+      }
+      #enterBtn {
+        padding: 10px 28px;
+        font-size: 1rem;
+      }
+      #typing-text {
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+      }
+      #ending-text {
+        font-size: 1.1rem;
+        padding: 15px;
+        line-height: 1.6;
+      }
+      #ending-from {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCREEN 1: LANDING -->
+  <div id="landing">
+    <h1>Happy Women's Day</h1>
+    <p>Nhấn để mở lời chúc dành cho bạn 💐</p>
+    <button id="enterBtn" onclick="startWishes()">Mở xem nào ✨</button>
+  </div>
+
+  <!-- SCREEN 2: TYPING WISHES -->
+  <div id="wishes">
+    <div id="typing-container">
+      <div id="typing-text"><span class="cursor"></span></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: SLIDESHOW -->
+  <div id="slideshow">
+    <img id="slideshow-img" src="" alt="photo">
+    <div id="slideshow-counter"></div>
+    <audio id="bgMusic" src="images/song.mp4" loop></audio>
+  </div>
+
+  <!-- SCREEN 4: ENDING -->
+  <div id="ending">
+    <canvas id="fireworks"></canvas>
+    <div id="ending-text">Chúc mừng 8/3, chúc chị em mãi xinh, mãi đỉnh,<br>luôn được yêu thương và luôn luôn luôn nhiều niềm vui ❤️❤️❤️</div>
+    <div id="ending-from">-from Tuấn Nguyễn-</div>
+  </div>
+
+  <script>
+    // ===== CONFIG =====
+    const wishParts = [
+      `Nhân ngày 8/3...`,
+      `Chúc tất cả các chị em\nluôn xinh đẹp, hạnh phúc và tràn đầy năng lượng!`,
+      `Trăm điều bất ngờ, nghìn niềm vui,\ntriệu giờ hạnh phúc.`,
+      `Chúc chị em sau những năm tháng thăng trầm\nvẫn luôn rực rỡ như mầm mùa xuân.`,
+      `Happy Women's Day! 💐`,
+    ];
+    const images = [
+      "linh1.jpg",
+      "linh2.jpg",
+      "linh3.jpg",
+      "linh4.jpg",
+      "thao1.jpg",
+      "thao2.jpg",
+      "thao3.jpg",
+      "thao4.jpg",
+      "thao5.jpg",
+      "tho1.jpg",
+      "tho2.jpg",
+      "tho3.jpg",
+      "tho4.jpg",
+      "trang1.jpg",
+      "trang2.jpg",
+      "trang3.jpg",
+      "trang4.jpg",
+      "trang5.jpg",
+      "trang6.jpg",
+      "la1.jpg",
+      "la2.jpg",
+      "la3.jpg",
+      "la4.jpg",
+      "la5.jpg",
+      "linhuyen.jpg",
+      "linthaoo.jpg",
+      "uyen1.jpg",
+      "uyen2.jpg",
+      "uyen3.jpg",
+      "uyen4.jpg",
+      "tranguyen.jpg",
+      "tranguyyen.jpg",
+      "IMG_1899.JPG",
+      "IMG_1915.JPG",
+      "IMG_1916.JPG",
+      "IMG_1917.JPG",
+      "IMG_1919.JPG",
+      "IMG_2462.JPG",
+      "IMG_2466.JPG",
+      "IMG_2467.JPG",
+      "IMG_3910.jpg",
+      "IMG_3912.jpg",
+      "IMG_3913.jpg",
+      "IMG_3914.jpg",
+      "IMG_3915.jpg",
+      "IMG_3916.jpg",
+      "IMG_3918.jpg",
+      "T8G08824.JPEG",
+      "team1.jpg",
+      "team2.jpg",
+      "team3.jpg",
+      "team4.jpg",
+      "team5.jpg",
+      "team6.jpg",
+      "team7.jpg",
+      "team8.jpg",
+      "team10.jpg",
+      "team11.JPEG",
+      "team11.jpg",
+      "team12.jpg",
+      "661db3f34f2701d52cfb95323c423921.JPEG",
+      "DSCF0040.JPEG",
+      "IMG_0899.jpg",
+      "IMG_1755.jpg",
+      "IMG_1802.jpg",
+      "IMG_1816.png",
+      "IMG_1865.jpg",
+      "IMG_2659-2.png",
+      "IMG_5911.png",
+      "IMG_5913.png",
+      "IMG_5942.png",
+      "IMG_5949.png",
+      "IMG_2067.jpg",
+    ];
+
+    // ===== TYPING SOUND =====
+    const typingAudio = new Audio('images/tieng_go_ban_phim_tren_capcut-www_tiengdong_com.mp3');
+    typingAudio.loop = true;
+    function startTypeSound() {
+      typingAudio.currentTime = 0;
+      typingAudio.volume = 0.5;
+      typingAudio.play();
+    }
+    function stopTypeSound() {
+      typingAudio.pause();
+    }
+
+    // ===== PETALS =====
+    function createPetals() {
+      const landing = document.getElementById('landing');
+      for (let i = 0; i < 25; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.animationDuration = (3 + Math.random() * 4) + 's';
+        petal.style.animationDelay = (Math.random() * 5) + 's';
+        petal.style.width = (8 + Math.random() * 10) + 'px';
+        petal.style.height = petal.style.width;
+        landing.appendChild(petal);
+      }
+    }
+    createPetals();
+
+    // ===== START WISHES =====
+    function startWishes() {
+      const landing = document.getElementById('landing');
+      landing.style.opacity = '0';
+      setTimeout(() => {
+        landing.style.display = 'none';
+        const wishes = document.getElementById('wishes');
+        wishes.style.display = 'flex';
+        startTypeSound();
+        playWishPart(0);
+      }, 800);
+    }
+
+    function playWishPart(partIndex) {
+      const container = document.getElementById('typing-text');
+      if (partIndex >= wishParts.length) {
+        stopTypeSound();
+        setTimeout(startSlideshow, 2500);
+        return;
+      }
+      typeText(wishParts[partIndex], 0, () => {
+        // Fade out current part
+        container.style.transition = 'opacity 0.8s ease';
+        container.style.opacity = '0';
+        setTimeout(() => {
+          container.innerHTML = '<span class="cursor"></span>';
+          container.style.opacity = '1';
+          playWishPart(partIndex + 1);
+        }, 1200);
+      });
+    }
+
+    // ===== TYPING EFFECT =====
+    function typeText(text, index, onDone) {
+      const container = document.getElementById('typing-text');
+      if (index < text.length) {
+        const char = text[index];
+        const cursor = container.querySelector('.cursor');
+        if (char === '\n') {
+          container.insertBefore(document.createElement('br'), cursor);
+        } else {
+          container.insertBefore(document.createTextNode(char), cursor);
+        }
+
+        const delay = char === '\n' ? 300 : (30 + Math.random() * 50);
+        setTimeout(() => typeText(text, index + 1, onDone), delay);
+      } else {
+        if (onDone) setTimeout(onDone, 1000);
+      }
+    }
+
+    // ===== SLIDESHOW =====
+    let currentSlide = 0;
+
+    function startSlideshow() {
+      const wishes = document.getElementById('wishes');
+      wishes.style.display = 'none';
+      const slideshow = document.getElementById('slideshow');
+      slideshow.style.display = 'flex';
+      showSlide(0);
+      const music = document.getElementById("bgMusic");
+      music.volume = 0.5;
+      music.play();
+      spawnHearts();
+    }
+
+    function showSlide(index) {
+      if (index >= images.length) {
+        // Show ending screen
+        document.getElementById('slideshow').style.display = 'none';
+        const ending = document.getElementById('ending');
+        ending.style.display = 'flex';
+        setTimeout(() => {
+          document.getElementById('ending-text').classList.add('show');
+          document.getElementById('ending-from').classList.add('show');
+          startFireworks();
+        }, 300);
+        return;
+      }
+      currentSlide = index;
+      const img = document.getElementById('slideshow-img');
+      const counter = document.getElementById('slideshow-counter');
+
+      img.classList.remove('show');
+
+      setTimeout(() => {
+        img.src = 'images/' + images[index];
+        img.onload = () => {
+          img.classList.add('show');
+          counter.textContent = '';
+        };
+      }, 400);
+
+      // Next slide after 2 seconds
+      setTimeout(() => showSlide(index + 1), 2000);
+    }
+
+    // ===== FLOATING HEARTS =====
+    function spawnHearts() {
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = ['❤', '❤'][Math.floor(Math.random() * 2)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.bottom = '0';
+        heart.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+        heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+        document.getElementById('slideshow').appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }, 800);
+    }
+    // ===== FIREWORKS =====
+    function startFireworks() {
+      const canvas = document.getElementById('fireworks');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
+      const particles = [];
+      const colors = ['#ff1744', '#ff4081', '#f50057', '#ff80ab', '#ff6090', '#e91e63', '#ffab40', '#ffd740', '#ff6e40'];
+
+      function Particle(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.vx = (Math.random() - 0.5) * 8;
+        this.vy = (Math.random() - 0.5) * 8;
+        this.alpha = 1;
+        this.decay = 0.01 + Math.random() * 0.02;
+        this.size = 2 + Math.random() * 2;
+      }
+
+      function createBurst(x, y) {
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        for (let i = 0; i < 60; i++) {
+          particles.push(new Particle(x, y, color));
+        }
+      }
+
+      function animate() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.05;
+          p.alpha -= p.decay;
+
+          if (p.alpha <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      function launchFirework() {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height * 0.5;
+        createBurst(x, y);
+      }
+
+      launchFirework();
+      launchFirework();
+      setInterval(() => {
+        launchFirework();
+        if (Math.random() > 0.5) launchFirework();
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
