@@ -355,8 +355,11 @@
     ];
     const images = [
       "https://sf-static.upanhlaylink.com/img/image_20260308e865fe84bf67422ad4a583469d66512b.jpg",
+      "https://sf-static.upanhlaylink.com/img/image_202603086d164f2f6e5ba14812608f4cfc77bdf7.jpg",
       "https://sf-static.upanhlaylink.com/img/image_202603081a386b147bc6749e8ce2dd78c6c12c1e.jpg",
+      "https://sf-static.upanhlaylink.com/img/image_202603081f26828ef41abe7f32001bbb0884c4d8.jpg",
       "https://sf-static.upanhlaylink.com/img/image_202603083a2abb4106455f04c753c14417aee817.jpg",
+      "https://sf-static.upanhlaylink.com/img/image_20260308576e855c5b158443da536e3217fd79a8.jpg",
       "https://sf-static.upanhlaylink.com/img/image_20260308348fde70c0e3519c93a0b3e4bb2a3da2.jpg",
       "https://sf-static.upanhlaylink.com/img/image_2026030889d4ee04b49b6b4bc0f7dc990935138a.jpg",
       "https://sf-static.upanhlaylink.com/img/image_202603080b43f0018f773392b8c966e46f111025.jpg",
@@ -440,6 +443,10 @@
     function startWishes() {
       const landing = document.getElementById('landing');
       landing.style.opacity = '0';
+      // Kích hoạt audio khi user click (tránh bị block autoplay), volume = 0 để im lặng
+      const music = document.getElementById("bgMusic");
+      music.volume = 0;
+      music.play().catch(() => {});
       setTimeout(() => {
         landing.style.display = 'none';
         const wishes = document.getElementById('wishes');
@@ -457,14 +464,8 @@
         return;
       }
       typeText(wishParts[partIndex], 0, () => {
-        // Fade out current part
-        container.style.transition = 'opacity 0.8s ease';
-        container.style.opacity = '0';
-        setTimeout(() => {
-          container.innerHTML = '<span class="cursor"></span>';
-          container.style.opacity = '1';
-          playWishPart(partIndex + 1);
-        }, 1200);
+        container.innerHTML = '<span class="cursor"></span>';
+        playWishPart(partIndex + 1);
       });
     }
 
