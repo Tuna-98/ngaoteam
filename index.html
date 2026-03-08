@@ -438,6 +438,7 @@
       }
     }
     createPetals();
+    preloadAllImages(); // Load ảnh ngay khi mở trang
 
     // ===== START WISHES =====
     function startWishes() {
@@ -491,6 +492,17 @@
     // ===== SLIDESHOW =====
     let currentSlide = 0;
 
+    function preloadAllImages() {
+      return Promise.all(images.map(src => {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve;
+          img.src = src;
+        });
+      }));
+    }
+
     function startSlideshow() {
       const wishes = document.getElementById('wishes');
       wishes.style.display = 'none';
@@ -530,7 +542,6 @@
         };
       }, 400);
 
-      // Next slide after 2 seconds
       setTimeout(() => showSlide(index + 1), 3500);
     }
 
